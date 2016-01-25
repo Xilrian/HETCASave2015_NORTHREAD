@@ -1,5 +1,6 @@
 package hetca;
 
+import static hetca.CAGird.initCA;
 import static hetca.Parameters.allreadyUsedPath;
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,7 +48,8 @@ public class ProcessDensity {
     private static void processGenotype(String pathFolder, int param, int run, int generation) {
 	for (Parameters.iteratorSetting = 0; Parameters.iteratorSetting < Parameters.nameSetting.length; Parameters.iteratorSetting++) {
 	    System.out.println("\n\n!!!!!!!!!!"+Parameters.nameSetting[Parameters.iteratorSetting]+"!!!!!!!!!!\n\n");
-	    String path = "predensity" + ParametersExport.Foldername + "/" + ParametersExport.params[param] + "/" + generation + "/" +  Parameters.nameSetting[Parameters.iteratorSetting]+"/"+run+"/";
+	    String path = "../predensity" + ParametersExport.Foldername + "/" + ParametersExport.params[param] + "/" + generation + "/" +  Parameters.nameSetting[Parameters.iteratorSetting]+"/"+run+"/";
+	    String pathDensity = "../predensity" + ParametersExport.Foldername + "-" + ParametersExport.params[param] + "-" + generation + "-" +  Parameters.nameSetting[Parameters.iteratorSetting]+"-"+run+"-";
 	    String uniqueid = ParametersExport.params[param] + "-" + generation + "-" + run;
 	    try {
 		if (!allreadyUsedPath(path+"density.txt")) {
@@ -79,7 +81,14 @@ public class ProcessDensity {
 	LocalCell.percentageMutation = 0;
 	LocalCell.decay = Parameters.paraDecay[Parameters.iDecay];
 	LocalCell.puberty = Parameters.paraPuberty[Parameters.iPuberty];
-	CAGird.CAGirdInit(500, 500);
+
+	CAGird.initLGP();
+	
+	int x = 250, y = 250;
+	CAGird.initCA(x, y);
+	
+	DetectCycle.initGird(x,y);
+	CAGird.SetStatesCount(9);	
 	Parameters.FolderDensity = pathExportImages;
 	States.reinitPropa();
 	return CAGird.runDensity(pathGenotype, uniqueid);

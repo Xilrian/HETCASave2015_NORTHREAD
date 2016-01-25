@@ -83,9 +83,7 @@ final class CAGird {
 	    Patern.initiate();
 	    Patern.initiateS();
 	}
-	if(!Parameters.isDensity){
-	    Parameters.initParaneters("/BeforeExport4",Parameters.paraMuta[Parameters.iMuta]);
-	}
+	Parameters.initParaneters("/BeforeExport4",Parameters.paraMuta[Parameters.iMuta]);
 	initLGP();
 	initCA(width, height);
 	SetStatesCount(9);
@@ -216,7 +214,7 @@ final class CAGird {
 	return varianceofvariancespe;
     }
 
-    private static void initLGP() {
+    public static void initLGP() {
 	LocalRule.numAdditionalRegisters = LocalCell.getNumStates() + 2;
 	ca.kowaliw.gp.GPParams.maxInitLength = 50;
 	ca.kowaliw.gp.GPParams.maxLength = 50;
@@ -246,6 +244,7 @@ final class CAGird {
 	Generation = 0;
 
 	CACells = new LocalCell[Parameters.UnivSize.x][Parameters.UnivSize.y];
+	
 	CAGird.CAStatesTmp = new byte[Parameters.UnivSize.x][Parameters.UnivSize.y];
 	Cycle.CAStatesTmpDeBug = new byte[Parameters.UnivSize.x][Parameters.UnivSize.y];
 	Cycle.CAStatesTmpDeBug2 = new String[Parameters.UnivSize.x][Parameters.UnivSize.y];

@@ -5,7 +5,7 @@
 package hetca;
 
 /**
- *
+ * 
  * @author David
  */
 class SlidingMachine
