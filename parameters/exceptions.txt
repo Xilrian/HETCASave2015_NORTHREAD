@@ -1,0 +1,4 @@
+stable
+variation
+variationLight
+variationTrans

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/LocalRule.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/PaletteDeCouleurs.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/ProcessSizeAndPop.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/CALGPRule.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/LocalCell.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/ProcessDensity.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/TempCell.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/CompareGenotypes.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/Main.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/Parameters.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/Patern.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/CALGP_Test.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/Debug.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/ParametersExport.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/States.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/CAGird.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/Cycle.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/SlidingMachine.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/Statistics.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/Configuration.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/CALGPIndividual.java</file>
+            <file>file:/Users/David/NetBeansProjects/HETCASave2015_NORTHREAD/src/hetca/BufferedImageBuilder.java</file>
+        </group>
+    </open-files>
+</project-private>

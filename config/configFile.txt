@@ -1,0 +1,10 @@
+#Dernière mise a jour :
+#Tue Dec 22 15:44:58 GMT 2015
+initial=0
+spawn=0
+accubonus=0
+decay=0
+fixbonus=0
+puberty=0
+muta=0
+expec=0
