@@ -84,7 +84,7 @@ public class ProcessDensity {
 
 	CAGird.initLGP();
 	
-	int x = 250, y = 250;
+	int x = 500, y = 500;
 	CAGird.initCA(x, y);
 	
 	DetectCycle.initGird(x,y);
