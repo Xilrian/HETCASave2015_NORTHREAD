@@ -53,7 +53,7 @@ public class ProcessDensity {
 	    String uniqueid = ParametersExport.params[param] + "-" + generation + "-" + run;
 	    try {
 		if (!allreadyUsedPath(path+"density.txt")) {
-		    File fichier = new File(path+"density.txt");
+		    File fichier = new File(pathDensity+".txt");
 		    fichier.getParentFile().mkdirs();
 		    fichier.createNewFile();
 
