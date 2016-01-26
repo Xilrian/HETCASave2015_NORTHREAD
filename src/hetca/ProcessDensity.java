@@ -41,28 +41,29 @@ public class ProcessDensity {
 
     private static void processGenotype(String pathFolder, int param, int run, int generation) {
 	for (Parameters.iteratorSetting = 0; Parameters.iteratorSetting < Parameters.nameSetting.length; Parameters.iteratorSetting++) {
-	    System.out.println("\n\n!!!!!!!!!!"+Parameters.nameSetting[Parameters.iteratorSetting]+"!!!!!!!!!!\n\n");
-	    String path = "../predensity" + ParametersExport.Foldername + "/" + ParametersExport.params[param] + "/" + generation + "/" +  Parameters.nameSetting[Parameters.iteratorSetting]+"/"+run+"/";
-	    String pathDensity = "../predensity" + ParametersExport.Foldername + ParametersExport.params[param] + "-" + generation + "-" +  Parameters.nameSetting[Parameters.iteratorSetting]+"-"+run;
-	    String uniqueid = ParametersExport.params[param] + "-" + generation + "-" + run;
-	    try {
-		if (!allreadyUsedPath(pathDensity+".txt")) {
-		    File fichier = new File(pathDensity+".txt");
-		    fichier.getParentFile().mkdirs();
-		    fichier.createNewFile();
+	    if(Parameters.iteratorSetting!=2){
+		System.out.println("\n\n!!!!!!!!!!"+Parameters.nameSetting[Parameters.iteratorSetting]+"!!!!!!!!!!\n\n");
+		String path = "../predensity" + ParametersExport.Foldername + "/" + ParametersExport.params[param] + "/" + generation + "/" +  Parameters.nameSetting[Parameters.iteratorSetting]+"/"+run+"/";
+		String pathDensity = "../predensity" + ParametersExport.Foldername + ParametersExport.params[param] + "-" + generation + "-" +  Parameters.nameSetting[Parameters.iteratorSetting]+"-"+run;
+		String uniqueid = ParametersExport.params[param] + "-" + generation + "-" + run;
+		try {
+		    if (!allreadyUsedPath(pathDensity+".txt")) {
+			File fichier = new File(pathDensity+".txt");
+			fichier.getParentFile().mkdirs();
+			fichier.createNewFile();
 
-		    String density = processDensityGenotype(pathFolder + "/" + run + "/" + generation + "-1.txt", uniqueid,path);
-		    PrintWriter writer = new PrintWriter(fichier, "UTF-8");
+			String density = processDensityGenotype(pathFolder + "/" + run + "/" + generation + "-1.txt", uniqueid,path);
+			PrintWriter writer = new PrintWriter(fichier, "UTF-8");
 
-		    writer.println(density);
-		    writer.close();
+			writer.println(density);
+			writer.close();
 
+		    }
+		} catch (IOException ex) {
+		    Logger.getLogger(ProcessDensity.class.getName()).log(Level.SEVERE, null, ex);
 		}
-	    } catch (IOException ex) {
-		Logger.getLogger(ProcessDensity.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println("\n\n+++++"+Parameters.nameSetting[Parameters.iteratorSetting]+"++++\n\n");
 	    }
-	    	    System.out.println("\n\n+++++"+Parameters.nameSetting[Parameters.iteratorSetting]+"++++\n\n");
-
 	}
     }
 
