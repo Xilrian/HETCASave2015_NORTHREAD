@@ -201,7 +201,7 @@ class Parameters {
     }
 
     static int getPreviouspropaChancesEvo(int i) {
-	return propaChancesEvo[propaChance[Parameters.iteratorSetting]][((CAGird.Generation + 10) / propaCycle[Parameters.iteratorSetting] - 1) % propaChancesEvo[propaChance[Parameters.iteratorSetting]].length][i];
+	return propaChancesEvo[propaChance[Parameters.iteratorSetting]][((CAGird.Generation + 10) / propaCycle[Parameters.iteratorSetting] - 1 + propaChancesEvo[propaChance[Parameters.iteratorSetting]].length) % propaChancesEvo[propaChance[Parameters.iteratorSetting]].length][i];
     }
 
     static String setRunName() {
@@ -286,8 +286,8 @@ class Parameters {
     }
 
     static int getMinCycleUpPropa() {
-	if(isCompare){
-	    return 100;
+	if(isCompare || isDensity){
+	    return 0;
 	}
 	else{
 	    return 3000;
