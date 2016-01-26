@@ -145,7 +145,7 @@ class Statistics {
     }
 
     static void processStatsDensity() {
-	densityStats += CAGird.Generation+"\t"+Population[Parameters.ISNORMAL]+"\t"+DetectCycle.detectRecurence()+"\n";
+	densityStats += CAGird.Generation+"\t"+Parameters.UnivSize.x+"\t"+Parameters.UnivSize.y+"\t"+Population[Parameters.ISNORMAL]+"\t"+DetectCycle.detectRecurence()+"\n";
 //	System.out.println(Population[Parameters.ISNORMAL]);
 	
     }

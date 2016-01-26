@@ -19,7 +19,7 @@ public class ParametersExport {
 
     public static final int maxIteration = 500000;
     public static final int stepIteration = 2500;
-    public static final int [] nbrRun  = {3,10,9,50,37};
+    public static final int [] nbrRun  = {3,14,13,50,37};
     static String[] params = {"varSmallValid", "varTransValid", "varLightValid", "StableValid", "varValid"};
     static int stepIterationGenotype = 100000;
     static String Foldername = "Results/";

@@ -1,14 +1,9 @@
 package hetca;
 
-import static hetca.CAGird.initCA;
 import static hetca.Parameters.allreadyUsedPath;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,17 +20,16 @@ public class ProcessDensity {
 	    String pathFolder = "/Volumes/1THD/valid/" + ParametersExport.params[iparam] + "/bestGenomes/";
 	    processParam(pathFolder, iparam);
 	}
-
     }
+    
+    
     // ----------------------------------------------------------------
     // The main initialization
-
     private static void processParam(String pathFolder, int param) {
 
 	for (int run = 0; run < ParametersExport.nbrRun[param]; run++) {
 	    processRun(pathFolder, param, run);
 	}
-
     }
 
     private static void processRun(String pathFolder, int param, int run) {
@@ -84,7 +78,7 @@ public class ProcessDensity {
 
 	CAGird.initLGP();
 	
-	int x = 500, y = 500;
+	int x = 150, y = 150;
 	CAGird.initCA(x, y);
 	
 	DetectCycle.initGird(x,y);

@@ -11,15 +11,17 @@ package hetca;
  */
 class DetectCycle {
 
-    private static int[] ageGird = {0, 0, 0, 0, 0, 0, 0};
+    private static final int[] ageGird = {0, 0, 0, 0, 0, 0, 0, 0};
     private static byte[][][] savedGrid;
     final static int ISNOTALIVE = -1;
-    private static int NOTFOUND = -2;
+    private static final int NOTFOUND = -2;
     private static int[][] lastCycle;
+    private static int[] regsiteredCycle;
 
     static String detectRecurence() {
+	razRegistered();
 	int iteratorCurrentGrid = addCurrentGird();
-	return "" + compageGird(iteratorCurrentGrid);
+	return "" + compageGird(iteratorCurrentGrid)+allCycle();
     }
 
     private static int addCurrentGird() {
@@ -61,7 +63,7 @@ class DetectCycle {
 
     private static int compareCells(int x, int y, int iCurrentGrid) {
 	int newCycle = ISNOTALIVE;
-	if (States.isAlive(savedGrid[iCurrentGrid][x][y])) {
+	if (!States.isDecay(savedGrid[iCurrentGrid][x][y]) && !bothQuiescent(x,y,iCurrentGrid)) {
 	    newCycle = findLastOccurence(iCurrentGrid, x, y);
 	}
 
@@ -71,30 +73,35 @@ class DetectCycle {
     private static int findLastOccurence(int iCurrentGrid, int x, int y) {
 	int generation = NOTFOUND;
 	for (int i = 0; i < ageGird.length; i++) {
-	    if (ageGird[i] != CAGird.Generation) {
+	    if (ageGird[i] < CAGird.Generation-1) {
 		if (savedGrid[iCurrentGrid][x][y] == savedGrid[i][x][y] && generation < ageGird[i]) {
-		    generation = ageGird[i];
+		    if(savedGrid[getPreviousIterator(iCurrentGrid)][x][y] == savedGrid[getPreviousIterator(i)][x][y]){
+			    generation = ageGird[i];
+		    }
 		}
 
 	    }
 	}
-	return generation;
+	return CAGird.Generation-generation;
     }
 
     private static int compareCycle(int x, int y, int newCycle) {
 	int ischange = 0;
-	if (lastCycle[x][y] != newCycle
-		&& (lastCycle[x][y] != ISNOTALIVE && newCycle != ISNOTALIVE)
-		&& (lastCycle[x][y] != NOTFOUND && newCycle != NOTFOUND)) {
-	    ischange = 1;
+	if (newCycle!= ISNOTALIVE && newCycle!= NOTFOUND && newCycle<8) {
+	    if(newCycle!=lastCycle[x][y]){
+		ischange = 1;
+		lastCycle[x][y] = newCycle;
+	    }
+//	    System.out.println(newCycle);
+	    registerCycle(newCycle-1);
 	}
-	lastCycle[x][y] = newCycle;
 	return ischange;
     }
 
     static void initGird(int x, int y) {
-	savedGrid = new byte[7][x][y];
+	savedGrid = new byte[8][x][y];
 	lastCycle = new int[x][y];
+	regsiteredCycle = new int[7];
 	for (byte[][] savedGrid1 : savedGrid) {
 	    for (byte[] savedGrid2 : savedGrid1) {
 		for (byte savedGrid3 : savedGrid2) {
@@ -106,6 +113,39 @@ class DetectCycle {
 	    for (int savedGrid2 : savedGrid1) {
 		    savedGrid2 = 0;
 	    }
+	}
+    }
+
+    private static boolean bothQuiescent(int x, int y, int iCurrentGrid) {
+	return States.isQuiescent(savedGrid[iCurrentGrid][x][y]) && States.isQuiescent(savedGrid[getPreviousIterator(iCurrentGrid)][x][y]);
+    }
+
+    private static int getPreviousIterator(int iCurrentGrid) {
+	int iterator = 0;
+	for(int i=0;i<ageGird.length;i++){
+	    if(ageGird[iCurrentGrid]-1==ageGird[i]){
+		iterator = i;
+		i = ageGird.length;
+	    }
+	}
+	return iterator;
+    }
+
+    private static void registerCycle(int newCycle) {
+	regsiteredCycle[newCycle]++;
+    }
+
+    private static String allCycle() {
+	String ret = "";
+	for(int i=0;i<regsiteredCycle.length;i++){
+	    ret += "\t"+regsiteredCycle[i];
+	}
+	return ret;
+    }
+
+    private static void razRegistered() {
+	for(int i=0;i<regsiteredCycle.length;i++){
+	    regsiteredCycle[i]=0;
 	}
     }
 
