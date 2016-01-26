@@ -51,7 +51,7 @@ public class ProcessDensity {
 		    fichier.getParentFile().mkdirs();
 		    fichier.createNewFile();
 
-		    String density = processDensityGenotype(pathFolder + "/" + run + "/" + generation + "-1.txt", uniqueid,path+"images/");
+		    String density = processDensityGenotype(pathFolder + "/" + run + "/" + generation + "-1.txt", uniqueid,path);
 		    PrintWriter writer = new PrintWriter(fichier, "UTF-8");
 
 		    writer.println(density);

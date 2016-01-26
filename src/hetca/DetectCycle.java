@@ -11,8 +11,8 @@ package hetca;
  */
 class DetectCycle {
 
-    private static final int[] ageGird = {0, 0, 0, 0, 0, 0, 0, 0};
-    private static byte[][][] savedGrid;
+    static int[] ageGird = {0, 0, 0, 0, 0, 0, 0, 0};
+    static byte[][][] savedGrid;
     final static int ISNOTALIVE = -1;
     private static final int NOTFOUND = -2;
     private static int[][] lastCycle;
@@ -21,7 +21,8 @@ class DetectCycle {
     static String detectRecurence() {
 	razRegistered();
 	int iteratorCurrentGrid = addCurrentGird();
-	return "" + compageGird(iteratorCurrentGrid)+allCycle();
+	String out = compageGird(iteratorCurrentGrid)+allCycle();
+	return out;
     }
 
     private static int addCurrentGird() {
@@ -113,6 +114,9 @@ class DetectCycle {
 	    for (int savedGrid2 : savedGrid1) {
 		    savedGrid2 = 0;
 	    }
+	}
+	for(int i=0; i < ageGird.length;i++){
+	    ageGird[i] = 0;
 	}
     }
 
