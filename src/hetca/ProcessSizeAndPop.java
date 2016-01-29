@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 //-----------------------------------------------------------------------
 public class ProcessSizeAndPop {
+    public static double maxError = 0.05;
 
     // ----------------------------------------------------------------
     // Default constructor, some VMs require it
@@ -43,18 +44,17 @@ public class ProcessSizeAndPop {
 		int numColonnes = 0;
 		int numLignes = 0;
 		while ((ligne = br.readLine()) != null) {
-		    if(takemin){
-			
-			if (ligne.split(separator).length >= ParametersExport.columnToParse2[ParametersExport.columnToParseName2.length-1]) {
+		    if (takemin) {
+
+			if (ligne.split(separator).length >= ParametersExport.columnToParse2[ParametersExport.columnToParseName2.length - 1]) {
 			    numLignes++;
-			  
+
 			    if (numColonnes == 0 || numColonnes > ligne.split(separator).length) {
 				numColonnes = ligne.split(separator).length;
 			    }
 			}
-		    }
-		    else{
-			if (ligne.split(separator).length > numColonnes ) {
+		    } else {
+			if (ligne.split(separator).length > numColonnes) {
 			    numColonnes = ligne.split(separator).length;
 			    numLignes = 1;
 			} else if (ligne.split(separator).length == numColonnes) {
@@ -184,13 +184,10 @@ public class ProcessSizeAndPop {
     private static double average(double[] dataDouble) {
 	return sum(dataDouble) / dataDouble.length;
     }
-    
-    
-    
 
     private static double std(double[] averageExport, double averageOfaverageExport) {
-	return Math.sqrt(partstd(averageExport,averageOfaverageExport)/averageExport.length);
-    
+	return Math.sqrt(partstd(averageExport, averageOfaverageExport) / (averageExport.length-1))/Math.sqrt(averageExport.length);
+
     }
 
     private static void displaySimple(double[] data, String separator) {
@@ -206,22 +203,40 @@ public class ProcessSizeAndPop {
 	}
     }
 
+    private static String arrayToString(double[] data, String separator) {
+	String ret = "";
+	boolean first = true;
+	for (double data11 : data) {
+	    if (!first) {
+		ret += separator;
+	    } else {
+		first = false;
+	    }
+	    ret += data11;
+	}
+	return ret;
+    }
+
+    private static String arrayToString(double[][][] export, int i, int k, String separator) {
+	String ret = "";
+	boolean first = true;
+	for (double[][] data : export) {
+	    if (!first) {
+		ret += separator;
+	    } else {
+		first = false;
+	    }
+	    ret += data[i][k];
+	}
+	return ret;
+    }
+
     private static void processTreeAtGeneration(String pathFolder, int i, double[][][] averageExport, double[][][] medianExport, int iteration, int idrun) {
 	String path = pathFolder + "tree_" + i + ".txt";
-	String[][] data = FileToArray(path, " ",false);
-//	int[] columnToParse = {9, 24, 28, 34};
+	String[][] data = FileToArray(path, " ", false);
 	double[][] dataDouble = parseDouble(data, ParametersExport.columnToParse);
 	ComputeMedian(dataDouble, medianExport, iteration, idrun);
 	ComputeAverage(dataDouble, averageExport, iteration, idrun);
-//	   displayWithI(data," ----- ");
-
-	/*	   display(dataDouble, " ----- ");
-	 System.out.print("\n");
-	 System.out.print("\n");
-	 displaySimple3Dim(medianExport[iteration], " ----- ",idrun);
-	 System.out.print("\n");
-	 System.out.print("\n");
-	 displaySimple3Dim(averageExport[iteration], " ----- ",idrun); */
     }
 
     private static void parseFolder(String pathFolder, double[][][] averageExport, double[][][] medianExport, int idrun) {
@@ -230,14 +245,7 @@ public class ProcessSizeAndPop {
 	    processTreeAtGeneration(pathFolder + idrun + "/", i, averageExport, medianExport, i / ParametersExport.stepIteration - 1, idrun);
 	}
 	processTreeAtGeneration(pathFolder + idrun + "/", 499999, averageExport, medianExport, ParametersExport.maxIteration / ParametersExport.stepIteration - 1, idrun);
-	/*	System.out.println("\n");
-	 displaySimple(columnToParseName," - ");
-	 System.out.println();
-	 display3Dim(averageExport," - ",idrun);
-	 System.out.println("\n");
-	 displaySimple(columnToParseName," / ");
-	 System.out.println();
-	 display3Dim(medianExport," / ",idrun);*/
+
     }
 
     private static void displaySimple3Dim(double[][] data, String separator, int idrun) {
@@ -254,24 +262,26 @@ public class ProcessSizeAndPop {
 	}
     }
 
-    private static void processMedianArray(double[][] medianOfaverageExport, double[][][] averageExport) {
+    private static void processMedianArray(double[][][] medianOfaverageExport, double[][][] averageExport) {
 	for (int i = 0; i < medianOfaverageExport.length; i++) {
 	    for (int j = 0; j < medianOfaverageExport[i].length; j++) {
-		medianOfaverageExport[i][j] = median(averageExport[i][j]);
+		medianOfaverageExport[i][j][0] = median(averageExport[i][j]);
+		double [] errors =    
+				ProcessStatsGeneric.getErrorMedian(averageExport[i][j],maxError);
+		medianOfaverageExport[i][j][1] = errors[0];
+		medianOfaverageExport[i][j][1] = errors[1];
 	    }
 	}
     }
 
-    private static void processAverageArray(double[][] averageOfaverageExport, double[][] stdOfaverageExport, double[][][] averageExport) {
+    private static void processAverageArray(double[][][] averageOfaverageExport, double[][][] averageExport) {
 	for (int i = 0; i < averageOfaverageExport.length; i++) {
 	    for (int j = 0; j < averageOfaverageExport[i].length; j++) {
-		averageOfaverageExport[i][j] = average(averageExport[i][j]);
-		stdOfaverageExport[i][j] = std(averageExport[i][j],averageOfaverageExport[i][j]);
+		averageOfaverageExport[i][j][0] = average(averageExport[i][j]);
+		averageOfaverageExport[i][j][1] = std(averageExport[i][j], averageOfaverageExport[i][j][0]);
 	    }
 	}
     }
-    
-    
 
     private static double sum(double[] dataDouble) {
 	double sum = 0;
@@ -280,15 +290,12 @@ public class ProcessSizeAndPop {
 	}
 	return sum;
     }
-    
-    
-    
 
     private static double partstd(double[] averageExport, double average) {
-	
+
 	double sum = 0;
-	for (int i =0; i<averageExport.length;i++) {
-	    sum += Math.pow(averageExport[i]-average,2);
+	for (int i = 0; i < averageExport.length; i++) {
+	    sum += Math.pow(averageExport[i] - average, 2);
 	}
 	return sum;
     }
@@ -301,54 +308,53 @@ public class ProcessSizeAndPop {
 	    parseFolder(pathFolder, averageExport, medianExport, i);
 	}
 
-	double[][] medianOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
-	double[][] medianOfmedianExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
-	double[][] averageOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
-	double[][] averageOfmedianExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
-	double[][] stdOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
-	double[][] stdOfavgmedExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
-	
+	double[][][] medianOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][2];
+	double[][][] medianOfmedianExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][2];
+	double[][][] averageOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][2];
+	double[][][] averageOfmedianExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][2];
+	//double[][] stdOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
+	//double[][] stdOfavgmedExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
+
+	exportBoxPlot(averageExport, "boxOfavg", ParametersExport.params[param], ParametersExport.columnToParseName);
+	exportBoxPlot(medianExport, "boxOfmed", ParametersExport.params[param], ParametersExport.columnToParseName);
+
 	processMedianArray(medianOfaverageExport, averageExport);
 	processMedianArray(medianOfmedianExport, medianExport);
-	processAverageArray(averageOfaverageExport,stdOfaverageExport, averageExport);
-	processAverageArray(averageOfmedianExport,stdOfavgmedExport, medianExport);
+	processAverageArray(averageOfaverageExport, averageExport);
+	processAverageArray(averageOfmedianExport, medianExport);
+	
 
-	System.out.println("\n");
-	displaySimple(ParametersExport.columnToParseName, " / ");
-	System.out.println();
-	display(medianOfaverageExport, "\t");
-	System.out.println("\n");
-	displaySimple(ParametersExport.columnToParseName, " / ");
-	System.out.println();
-	display(medianOfmedianExport, "\t");
-	System.out.println("Start Export P");
-
-	exportResults(medianOfaverageExport, "medOfavg", ParametersExport.params[param],ParametersExport.columnToParseName);
-	exportResults(medianOfmedianExport, "medOfmed", ParametersExport.params[param],ParametersExport.columnToParseName);
-	exportResults(averageOfaverageExport, "avgOfavg", ParametersExport.params[param],ParametersExport.columnToParseName);
-	exportResults(stdOfaverageExport, "stdOfavg", ParametersExport.params[param],ParametersExport.columnToParseName);
-	exportResults(averageOfmedianExport, "avgOfmed", ParametersExport.params[param],ParametersExport.columnToParseName);
+	exportResults(medianOfaverageExport, "medOfavg", ParametersExport.params[param], ParametersExport.columnToParseName);
+	exportResults(medianOfmedianExport, "medOfmed", ParametersExport.params[param], ParametersExport.columnToParseName);
+	exportResults(averageOfaverageExport, "avgOfavg", ParametersExport.params[param], ParametersExport.columnToParseName);
+	exportResults(averageOfmedianExport, "avgOfmed", ParametersExport.params[param], ParametersExport.columnToParseName);
 
 	System.out.println("End Export P");
     }
 
-    private static void exportResults(double[][] medianOfaverageExport, String mode, String param, String [] dataName) {
+    private static void exportResults(double[][][] medianOfaverageExport, String mode, String param, String[] dataName) {
 	for (int i = 0; i < dataName.length; i++) {
-	    export(medianOfaverageExport, i, mode, param, dataName);
+	    exportNormal(medianOfaverageExport, i, mode, param, dataName);
 	}
     }
 
-    private static void export(double[][] medianOfaverageExport, int i, String mode, String param, String [] dataName) {
-	File fichier = new File(ParametersExport.Foldername + dataName[i] + "/" + param +"-"+ mode + ".txt");
+    private static void exportBoxPlot(double[][][] export, String mode, String param, String[] dataName) {
+	for (int i = 0; i < dataName.length; i++) {
+	    export(export, i, mode, param, dataName);
+	}
+    }
+
+    private static void exportNormal(double[][][] medianOfaverageExport, int i, String mode, String param, String[] dataName) {
+	File fichier = new File(ParametersExport.Foldername + dataName[i] + "/" + param + "-" + mode + ".txt");
 	fichier.getParentFile().mkdirs();
 
 	try {
 	    fichier.createNewFile();
-	
+
 	    PrintWriter writer = new PrintWriter(fichier, "UTF-8");
 
-	    for (double[] medianOfaverageExport1 : medianOfaverageExport) {
-		writer.println(medianOfaverageExport1[i]);
+	    for (double[][] medianOfaverageExport1 : medianOfaverageExport) {
+		writer.println(arrayToString(medianOfaverageExport1[i],";"));
 	    }
 	    writer.close();
 	} catch (IOException ex) {
@@ -356,61 +362,70 @@ public class ProcessSizeAndPop {
 	}
 
     }
-    
-    
-        private static void processParamGnuFile(String pathFolder, int param) {
+
+    private static void export(double[][][] export, int i, String mode, String param, String[] dataName) {
+	File fichier = new File(ParametersExport.Foldername + dataName[i] + "/" + param + "-" + mode + ".txt");
+	fichier.getParentFile().mkdirs();
+
+	try {
+	    fichier.createNewFile();
+
+	    PrintWriter writer = new PrintWriter(fichier, "UTF-8");
+
+	    for (int k = 0; k < export[0][0].length; k++) {
+		writer.println(arrayToString(export, i, k, ";"));
+	    }
+	    writer.close();
+	} catch (IOException ex) {
+	    Logger.getLogger(ProcessSizeAndPop.class.getName()).log(Level.SEVERE, null, ex);
+	}
+    }
+
+    private static void processParamGnuFile(String pathFolder, int param) {
 
 	double[][][] export = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length][ParametersExport.nbrRun[param]];
 	for (int idRun = 0; idRun < ParametersExport.nbrRun[param]; idRun++) {
-	    parseGnu(pathFolder+"/"+idRun+"-gnuplot.txt", export, idRun);
+	    parseGnu(pathFolder + "/" + idRun + "-gnuplot.txt", export, idRun);
 	}
-	
-	
-	double[][] medianOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length];
-	double[][] averageOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length];
-	double[][] stdOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length];
 
-	
+	double[][][] medianOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length][2];
+	double[][][] averageOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length][2];
+//	double[][] stdOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length];
+
+	exportBoxPlot(export, "boxOfavg", ParametersExport.params[param], ParametersExport.columnToParseName2);
+
 	processMedianArray(medianOfExport, export);
-	processAverageArray(averageOfExport,stdOfExport, export);
-
-	System.out.println("\n");
-	displaySimple(ParametersExport.columnToParseName2, " / ");
-	System.out.println();
-	display(medianOfExport, "\t");
-	System.out.println("\n");
-	displaySimple(ParametersExport.columnToParseName2, " / ");
-	System.out.println();
-	display(averageOfExport, "\t");
+	processAverageArray(averageOfExport, export);
+	
 
 	System.out.println("Start Export");
-	exportResults(medianOfExport, "medOfmed", ParametersExport.params[param],ParametersExport.columnToParseName2);
-	exportResults(averageOfExport, "avgOfavg", ParametersExport.params[param],ParametersExport.columnToParseName2);
-	exportResults(stdOfExport, "stdOfavg", ParametersExport.params[param],ParametersExport.columnToParseName2);
+	exportResults(medianOfExport, "medOfmed", ParametersExport.params[param], ParametersExport.columnToParseName2);
+	exportResults(averageOfExport, "avgOfavg", ParametersExport.params[param], ParametersExport.columnToParseName2);
+//	exportResults(stdOfExport, "stdOfavg", ParametersExport.params[param],ParametersExport.columnToParseName2);
 	System.out.println("Done Export");
 
     }
 
-
     private static void parseGnu(String path, double[][][] export, int idRun) {
-	String[][] data = FileToArray(path, " ",true);
+	String[][] data = FileToArray(path, " ", true);
 	double[][] dataDouble = parseDoubleNormal(data, ParametersExport.columnToParse2);
 	for (double[] dataDouble1 : dataDouble) {
-	    if (((int)dataDouble1[0]) % ParametersExport.stepIteration == 0) {
-		for (int j = 0; j< ParametersExport.columnToParseName2.length; j++) {
-		    export[((int) dataDouble1[0]) / ParametersExport.stepIteration-1][j][idRun] = dataDouble1[j];
+	    if (((int) dataDouble1[0]) % ParametersExport.stepIteration == 0) {
+		for (int j = 0; j < ParametersExport.columnToParseName2.length; j++) {
+		    export[((int) dataDouble1[0]) / ParametersExport.stepIteration - 1][j][idRun] = dataDouble1[j];
 		}
 	    }
 	}
-	for (int j = 0; j< ParametersExport.columnToParseName2.length; j++) {
-	    export[export.length-1][j][idRun] = dataDouble[dataDouble.length-1][j];
+	for (int j = 0; j < ParametersExport.columnToParseName2.length; j++) {
+	    export[export.length - 1][j][idRun] = dataDouble[dataDouble.length - 1][j];
 	}
     }
 
     private static void display3D(double[][][] export, String separator) {
-	for(int run=0;run<export[0][0].length;run++){
-	    System.out.println("\n\n\n\nRun:"+run+":\n");
-	    display3Dim(export,separator,run);
+	for (int run = 0; run < export[0][0].length; run++) {
+	    System.out.println("\n\n\n\nRun:" + run + ":\n");
+	    display3Dim(export, separator, run);
 	}
     }
+
 }
