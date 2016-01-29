@@ -103,18 +103,21 @@ class DetectCycle {
 	savedGrid = new byte[8][x][y];
 	lastCycle = new int[x][y];
 	regsiteredCycle = new int[7];
-	for (byte[][] savedGrid1 : savedGrid) {
-	    for (byte[] savedGrid2 : savedGrid1) {
-		for (byte savedGrid3 : savedGrid2) {
-		    savedGrid3 = 0;
+	
+	for (int i =0;i<savedGrid.length;i++) {
+	    for (int j =0;j<savedGrid[0].length;j++) {
+		for (int k =0;k<savedGrid[0][0].length;k++) {
+		    savedGrid[i][j][k] = 0;
 		}
 	    }
 	}
-	for (int[] savedGrid1 : lastCycle) {
-	    for (int savedGrid2 : savedGrid1) {
-		    savedGrid2 = 0;
+	
+	for (int i =0;i<lastCycle.length;i++) {
+	    for (int j =0;j<lastCycle[0].length;j++) {
+		    lastCycle[i][j] = 0;
 	    }
 	}
+	
 	for(int i=0; i < ageGird.length;i++){
 	    ageGird[i] = 0;
 	}
