@@ -269,7 +269,7 @@ public class ProcessSizeAndPop {
 		double [] errors =    
 				ProcessStatsGeneric.getErrorMedian(averageExport[i][j],maxError);
 		medianOfaverageExport[i][j][1] = errors[0];
-		medianOfaverageExport[i][j][1] = errors[1];
+		medianOfaverageExport[i][j][2] = errors[1];
 	    }
 	}
     }
@@ -308,8 +308,8 @@ public class ProcessSizeAndPop {
 	    parseFolder(pathFolder, averageExport, medianExport, i);
 	}
 
-	double[][][] medianOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][2];
-	double[][][] medianOfmedianExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][2];
+	double[][][] medianOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][3];
+	double[][][] medianOfmedianExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][3];
 	double[][][] averageOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][2];
 	double[][][] averageOfmedianExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length][2];
 	//double[][] stdOfaverageExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName.length];
@@ -388,7 +388,7 @@ public class ProcessSizeAndPop {
 	    parseGnu(pathFolder + "/" + idRun + "-gnuplot.txt", export, idRun);
 	}
 
-	double[][][] medianOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length][2];
+	double[][][] medianOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length][3];
 	double[][][] averageOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length][2];
 //	double[][] stdOfExport = new double[ParametersExport.maxIteration / ParametersExport.stepIteration][ParametersExport.columnToParseName2.length];
 

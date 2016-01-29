@@ -28,3 +28,11 @@
 *.properties
 
 *.jar
+
+build/built-jar.properties
+
+build/classes/hetca/ProcessSizeAndPop.class
+
+*.properties
+
+*.jar
